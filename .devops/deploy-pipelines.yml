@@ -64,25 +64,23 @@ stages:
         pool:
           vmImage: $(vmImageNameDefault)
         steps:
-          # - task: Bash@3
-          #   displayName: 'Docker login to external registry'
+          # - script: |
+          #     echo $DOCKER_REGISTRY_PAGOPA_TOKEN_RO | docker login ghcr.io -u $DOCKER_REGISTRY_PAGOPA_USER --password-stdin
+          #     docker build --file '$(Build.Repository.LocalPath)/$(dockerfileRelativePath)' --tag $(Build.BuildId) --build-arg APP_IMAGE=$(DOCKER_BASE_IMAGE_NAME):${{ parameters.version }}
+          #     docker build --file '$(Build.Repository.LocalPath)/$(dockerfileRelativePath)' --tag container_tag --build-arg APP_IMAGE=$(DOCKER_BASE_IMAGE_NAME):${{ parameters.version }}
+          #     docker build --file '$(Build.Repository.LocalPath)/$(dockerfileRelativePath)' --tag container_tag --build-arg APP_IMAGE=$(DOCKER_BASE_IMAGE_NAME):${{ parameters.version }}
+
+          #     docker build --file --tag "ghcr.io/${ORG}/${GITHUB_REPO}:${VERSION}" .
           #   env:
           #     DOCKER_REGISTRY_PAGOPA_USER: $(DOCKER_REGISTRY_PAGOPA_USER)
           #     DOCKER_REGISTRY_PAGOPA_TOKEN_RO: $(DOCKER_REGISTRY_PAGOPA_TOKEN_RO)
-          #   inputs:
-          #     script: echo $DOCKER_REGISTRY_PAGOPA_TOKEN_RO | docker login ghcr.io -u $DOCKER_REGISTRY_PAGOPA_USER --password-stdin
-          - script: |
-              echo $DOCKER_REGISTRY_PAGOPA_TOKEN_RO | docker login ghcr.io -u $DOCKER_REGISTRY_PAGOPA_USER --password-stdin
-            env:
-              DOCKER_REGISTRY_PAGOPA_USER: $(DOCKER_REGISTRY_PAGOPA_USER)
-              DOCKER_REGISTRY_PAGOPA_TOKEN_RO: $(DOCKER_REGISTRY_PAGOPA_TOKEN_RO)
-            displayName: 'Docker login to external registry'
+          #   displayName: 'Docker login to external registry'
           - task: Docker@2
             displayName: 'Build_image_to_${{ variables.environment }}'
             condition: succeeded()
             inputs:
-              containerRegistry: '$(dockerRegistryServiceConnection)'
-              repository: '$(imageRepository)'
+              containerRegistry: '$(COMMON_CONTAINER_REGISTRY_SERVICE_CONN)'
+              # repository: '$(imageRepository)'
               command: 'Build'
               Dockerfile: '$(Build.Repository.LocalPath)/$(dockerfileRelativePath)'
               buildContext: '$(Build.Repository.LocalPath)'
