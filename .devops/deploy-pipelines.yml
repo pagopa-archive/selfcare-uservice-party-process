@@ -84,11 +84,11 @@ stages:
               command: 'Build'
               Dockerfile: '$(Build.Repository.LocalPath)/$(dockerfileRelativePath)'
               buildContext: '$(Build.Repository.LocalPath)'
-              arguments: '--build-arg APP_IMAGE=$(DOCKER_BASE_IMAGE_NAME):${{ parameters.version }}'
-              tags: |
-                $(Build.BuildId)
-                latest
-                ${{ parameters.version }}
+              arguments: '--build-arg APP_IMAGE=$(DOCKER_BASE_IMAGE_NAME):${{ parameters.version }} --tag $(containerRegistry)/$(imageRepository):${{ parameters.version }} $(containerRegistry)/$(imageRepository):$(Build.BuildId) $(containerRegistry)/$(imageRepository):latest'
+              # tags: |
+              #   $(Build.BuildId)
+              #   latest
+              #   ${{ parameters.version }}
           - task: Docker@2
             displayName: 'Publish_image_to_${{ variables.environment }}'
             condition: succeeded()
