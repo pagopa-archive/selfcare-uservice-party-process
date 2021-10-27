@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: uservicepartyprocess
+  name: uservicepartyprocess
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: uservicepartyprocess
+  template:
+    metadata:
+      labels:
+        app: uservicepartyprocess
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - name: uservicepartyprocess
+          image: selcdacr.azurecr.io/uservicepartyprocess
+          imagePullPolicy: Always
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: management
+            periodSeconds: 10
+            failureThreshold: 3
+            initialDelaySeconds: 10
+          livenessProbe:
+            httpGet:
+              path: '/alive'
+              port: management
+            periodSeconds: 10
+            failureThreshold: 5
+            initialDelaySeconds: 20
+          ports:
+            - name: management
+              containerPort: 8558
+              protocol: TCP
+            - name: http
+              containerPort: 8088
+              protocol: TCP
+            - name: monitoring
+              containerPort: 9095
+              protocol: TCP
+          env:
+            - name: VAULT_ADDR
+              valueFrom:
+                secretKeyRef:
+                  name: vault
+                  key: VAULT_ADDR
+            - name: VAULT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: vault
+                  key: VAULT_TOKEN
+            - name: SMTP_USR
+              valueFrom:
+                secretKeyRef:
+                  name: smtp
+                  key: SMTP_USR
+            - name: SMTP_PSW
+              valueFrom:
+                secretKeyRef:
+                  name: smtp
+                  key: SMTP_PSW
+            - name: DESTINATION_MAILS
+              valueFrom:
+                secretKeyRef:
+                  name: mail
+                  key: DESTINATION_MAILS
+            - name: MANAGER_PLATFORM_ROLES
+              value: { { managerPlatformRoles } }
+            - name: DELEGATE_PLATFORM_ROLES
+              value: { { delegatePlatformRoles } }
+            - name: OPERATOR_PLATFORM_ROLES
+              value: { { operatorPlatformRoles } }
+            - name: STORAGE_CONTAINER
+              value: { { storageContainer } }
+            - name: STORAGE_ENDPOINT
+              value: { { storageEndpoint } }
+            - name: STORAGE_APPLICATION_ID
+              valueFrom:
+                secretKeyRef:
+                  name: storage
+                  key: STORAGE_USR
+            - name: STORAGE_APPLICATION_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: storage
+                  key: STORAGE_PSW
+      volumes:
+        - name: snapshots-volume
+          emptyDir: {}
