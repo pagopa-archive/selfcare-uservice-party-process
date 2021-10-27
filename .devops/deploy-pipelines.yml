@@ -80,7 +80,7 @@ stages:
             condition: succeeded()
             inputs:
               containerRegistry: '$(COMMON_CONTAINER_REGISTRY_SERVICE_CONN)'
-              # repository: '$(imageRepository)'
+              repository: '$(imageRepository)'
               command: 'Build'
               Dockerfile: '$(Build.Repository.LocalPath)/$(dockerfileRelativePath)'
               buildContext: '$(Build.Repository.LocalPath)'
