@@ -84,10 +84,15 @@ stages:
               command: 'Build'
               Dockerfile: '$(Build.Repository.LocalPath)/$(dockerfileRelativePath)'
               buildContext: '$(Build.Repository.LocalPath)'
+              # arguments: |
+              #   --tag "$(containerRegistry)/$(imageRepository):${{ parameters.version }}"
+              #         "$(containerRegistry)/$(imageRepository):$(Build.BuildId)"
+              #         "$(containerRegistry)/$(imageRepository):latest"
+              #   --build-arg "APP_IMAGE=$(DOCKER_BASE_IMAGE_NAME):${{ parameters.version }}"
               arguments: |
-                --tag "$(containerRegistry)/$(imageRepository):${{ parameters.version }}"
-                      "$(containerRegistry)/$(imageRepository):$(Build.BuildId)"
-                      "$(containerRegistry)/$(imageRepository):latest"
+                --tag "selcdacr.azurecr.io/uservicepartyprocess:${{ parameters.version }}"
+                      "selcdacr.azurecr.io/uservicepartyprocess:10"
+                      "selcdacr.azurecr.io/uservicepartyprocess:latest"
                 --build-arg "APP_IMAGE=$(DOCKER_BASE_IMAGE_NAME):${{ parameters.version }}"
               # tags: |
               #   $(Build.BuildId)
