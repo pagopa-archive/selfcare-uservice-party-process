@@ -80,10 +80,11 @@ stages:
             condition: succeeded()
             inputs:
               containerRegistry: '$(COMMON_CONTAINER_REGISTRY_SERVICE_CONN)'
-              repository: '$(COMMON_CONTAINER_REGISTRY_NAME)'
+              repository: '$(imageRepository)'
               command: 'Build'
               Dockerfile: '$(Build.Repository.LocalPath)/$(dockerfileRelativePath)'
               buildContext: '$(Build.Repository.LocalPath)'
+              arguments: --build-arg 'APP_IMAGE=$(DOCKER_BASE_IMAGE_NAME):${{ parameters.version }}'
               # arguments: |
               #   --tag "$(containerRegistry)/$(imageRepository):${{ parameters.version }}"
               #         "$(containerRegistry)/$(imageRepository):$(Build.BuildId)"
