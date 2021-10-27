@@ -76,7 +76,7 @@ stages:
             displayName: 'Build_image_to_${{ variables.environment }}'
             condition: succeeded()
             inputs:
-              containerRegistry: '${{ variables.dockerRegistryServiceConnection }}'
+              containerRegistry: ${{ variables.dockerRegistryServiceConnection }}
               repository: '$(imageRepository)'
               command: 'Build'
               Dockerfile: '$(Build.Repository.LocalPath)/$(dockerfileRelativePath)'
@@ -90,7 +90,7 @@ stages:
             displayName: 'Publish_image_to_${{ variables.environment }}'
             condition: succeeded()
             inputs:
-              containerRegistry: '${{ variables.dockerRegistryServiceConnection }}'
+              containerRegistry: ${{ variables.dockerRegistryServiceConnection }}
               repository: '$(imageRepository)'
               command: 'push'
               Dockerfile: '$(Build.Repository.LocalPath)/$(dockerfileRelativePath)'
