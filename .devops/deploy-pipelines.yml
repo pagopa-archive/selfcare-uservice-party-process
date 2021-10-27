@@ -86,7 +86,7 @@ stages:
               command: 'Build'
               Dockerfile: '$(Build.Repository.LocalPath)/$(dockerfileRelativePath)'
               buildContext: '$(Build.Repository.LocalPath)'
-              arguments: --APP_IMAGE '$(DOCKER_BASE_IMAGE_NAME):${{ parameters.version }}'
+              arguments: '--build-arg --APP_IMAGE $(DOCKER_BASE_IMAGE_NAME):${{ parameters.version }}'
               tags: |
                 $(Build.BuildId)
                 latest
