@@ -64,17 +64,6 @@ stages:
         pool:
           vmImage: $(vmImageNameDefault)
         steps:
-          # - script: |
-          #     echo $DOCKER_REGISTRY_PAGOPA_TOKEN_RO | docker login ghcr.io -u $DOCKER_REGISTRY_PAGOPA_USER --password-stdin
-          #     docker build --file '$(Build.Repository.LocalPath)/$(dockerfileRelativePath)' --tag $(Build.BuildId) --build-arg APP_IMAGE=$(DOCKER_BASE_IMAGE_NAME):${{ parameters.version }}
-          #     docker build --file '$(Build.Repository.LocalPath)/$(dockerfileRelativePath)' --tag container_tag --build-arg APP_IMAGE=$(DOCKER_BASE_IMAGE_NAME):${{ parameters.version }}
-          #     docker build --file '$(Build.Repository.LocalPath)/$(dockerfileRelativePath)' --tag container_tag --build-arg APP_IMAGE=$(DOCKER_BASE_IMAGE_NAME):${{ parameters.version }}
-
-          #     docker build --file --tag "ghcr.io/${ORG}/${GITHUB_REPO}:${VERSION}" .
-          #   env:
-          #     DOCKER_REGISTRY_PAGOPA_USER: $(DOCKER_REGISTRY_PAGOPA_USER)
-          #     DOCKER_REGISTRY_PAGOPA_TOKEN_RO: $(DOCKER_REGISTRY_PAGOPA_TOKEN_RO)
-          #   displayName: 'Docker login to external registry'
           - task: Docker@2
             displayName: 'Build_image'
             condition: succeeded()
@@ -85,16 +74,6 @@ stages:
               Dockerfile: '$(Build.Repository.LocalPath)/$(dockerfileRelativePath)'
               buildContext: '$(Build.Repository.LocalPath)'
               arguments: --build-arg 'APP_IMAGE=$(DOCKER_BASE_IMAGE_NAME):${{ parameters.version }}'
-              # arguments: |
-              #   --tag "$(containerRegistry)/$(imageRepository):${{ parameters.version }}"
-              #         "$(containerRegistry)/$(imageRepository):$(Build.BuildId)"
-              #         "$(containerRegistry)/$(imageRepository):latest"
-              #   --build-arg "APP_IMAGE=$(DOCKER_BASE_IMAGE_NAME):${{ parameters.version }}"
-              # arguments: |
-              #   --tag 'selcdacr.azurecr.io/uservicepartyprocess:${{ parameters.version }}'
-              #         'selcdacr.azurecr.io/uservicepartyprocess:10'
-              #         'selcdacr.azurecr.io/uservicepartyprocess:latest'
-              #   --build-arg 'APP_IMAGE=$(DOCKER_BASE_IMAGE_NAME):${{ parameters.version }}''
               tags: |
                 $(Build.BuildId)
                 latest
@@ -117,13 +96,6 @@ stages:
                 $(Build.BuildId)
                 latest
                 ${{ parameters.version }}
-          - task: PublishPipelineArtifact@1
-            displayName: 'Publish Atrifact manifests'
-            condition: succeeded()
-            inputs:
-              targetPath: '$(Build.Repository.LocalPath)/manifests'
-              artifact: 'manifests'
-              publishLocation: 'pipeline'
 
   - stage: 'Deploy'
     displayName: 'Deploy_to_${{ variables.environment }}'
