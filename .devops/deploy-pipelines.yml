@@ -64,19 +64,24 @@ stages:
         pool:
           vmImage: $(vmImageNameDefault)
         steps:
-          - task: Bash@3
-            displayName: 'Docker login to external registry'
-            condition: succeeded()
+          # - task: Bash@3
+          #   displayName: 'Docker login to external registry'
+          #   env:
+          #     DOCKER_REGISTRY_PAGOPA_USER: $(DOCKER_REGISTRY_PAGOPA_USER)
+          #     DOCKER_REGISTRY_PAGOPA_TOKEN_RO: $(DOCKER_REGISTRY_PAGOPA_TOKEN_RO)
+          #   inputs:
+          #     script: echo $DOCKER_REGISTRY_PAGOPA_TOKEN_RO | docker login ghcr.io -u $DOCKER_REGISTRY_PAGOPA_USER --password-stdin
+          - script: |
+              echo $DOCKER_REGISTRY_PAGOPA_TOKEN_RO | docker login ghcr.io -u $DOCKER_REGISTRY_PAGOPA_USER --password-stdin
             env:
               DOCKER_REGISTRY_PAGOPA_USER: $(DOCKER_REGISTRY_PAGOPA_USER)
               DOCKER_REGISTRY_PAGOPA_TOKEN_RO: $(DOCKER_REGISTRY_PAGOPA_TOKEN_RO)
-            inputs:
-              script: echo $DOCKER_REGISTRY_PAGOPA_TOKEN_RO | docker login ghcr.io -u $DOCKER_REGISTRY_PAGOPA_USER --password-stdin
+            displayName: 'Docker login to external registry'
           - task: Docker@2
             displayName: 'Build_image_to_${{ variables.environment }}'
             condition: succeeded()
             inputs:
-              containerRegistry: ${{ variables.dockerRegistryServiceConnection }}
+              containerRegistry: '$(dockerRegistryServiceConnection)'
               repository: '$(imageRepository)'
               command: 'Build'
               Dockerfile: '$(Build.Repository.LocalPath)/$(dockerfileRelativePath)'
@@ -90,7 +95,7 @@ stages:
             displayName: 'Publish_image_to_${{ variables.environment }}'
             condition: succeeded()
             inputs:
-              containerRegistry: ${{ variables.dockerRegistryServiceConnection }}
+              containerRegistry: '$(dockerRegistryServiceConnection)'
               repository: '$(imageRepository)'
               command: 'push'
               Dockerfile: '$(Build.Repository.LocalPath)/$(dockerfileRelativePath)'
