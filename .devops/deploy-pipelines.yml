@@ -39,7 +39,6 @@ variables:
   managerPlatformRoles: '$(MANAGER_PLATFORM_ROLES)'
   delegatePlatformRoles: '$(DELEGATE_PLATFORM_ROLES)'
   operatorPlatformRoles: '$(OPERATOR_PLATFORM_ROLES)'
-  storageContainer: '$(STORAGE_CONTAINER)'
 
   ${{ if eq(parameters['environment'], 'dev') }}:
     environment: 'DEV'
@@ -50,6 +49,7 @@ variables:
 
     # App configuration
     replicas: $(DEV_REPLICAS)
+    storageContainer: '$(DEV_STORAGE_CONTAINER)'
     storageEndpoint: '$(DEV_STORAGE_ENDPOINT)'
     partyManagementUrl: '$(DEV_PARTY_MANAGEMENT_URL)'
     partyProxyUrl: '$(DEV_PARTY_PROXY_URL)'
@@ -66,6 +66,7 @@ variables:
 
     # App configuration
     replicas: $(UAT_REPLICAS)
+    storageContainer: '$(UAT_STORAGE_CONTAINER)'
     storageEndpoint: '$(UAT_STORAGE_ENDPOINT)'
     partyManagementUrl: '$(UAT_PARTY_MANAGEMENT_URL)'
     partyProxyUrl: '$(UAT_PARTY_PROXY_URL)'
@@ -82,6 +83,7 @@ variables:
 
     # App configuration
     replicas: $(PROD_REPLICAS)
+    storageContainer: '$(PROD_STORAGE_CONTAINER)'
     storageEndpoint: '$(PROD_STORAGE_ENDPOINT)'
     partyManagementUrl: '$(PROD_PARTY_MANAGEMENT_URL)'
     partyProxyUrl: '$(PROD_PARTY_PROXY_URL)'
