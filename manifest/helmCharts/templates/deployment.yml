@@ -2,23 +2,23 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: uservicepartyprocess
-  name: uservicepartyprocess
+    app: uservice-party-process
+  name: uservice-party-process
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
-      app: uservicepartyprocess
+      app: uservice-party-process
   template:
     metadata:
       labels:
-        app: uservicepartyprocess
+        app: uservice-party-process
     spec:
       imagePullSecrets:
         - name: regcred
       containers:
-        - name: uservicepartyprocess
-          image: selcdacr.azurecr.io/uservicepartyprocess
+        - name: uservice-party-process
+          image: {{ .Values.containerRegistry }}/{{ .Values.imageRepository }}
           imagePullPolicy: Always
           readinessProbe:
             httpGet:
@@ -29,7 +29,7 @@ spec:
             initialDelaySeconds: 10
           livenessProbe:
             httpGet:
-              path: '/alive'
+              path: "/alive"
               port: management
             periodSeconds: 10
             failureThreshold: 5
@@ -71,15 +71,15 @@ spec:
                   name: mail
                   key: DESTINATION_MAILS
             - name: MANAGER_PLATFORM_ROLES
-              value: { { managerPlatformRoles } }
+              value: {{ .Values.managerPlatformRoles }}
             - name: DELEGATE_PLATFORM_ROLES
-              value: { { delegatePlatformRoles } }
+              value: {{ .Values.delegatePlatformRoles }}
             - name: OPERATOR_PLATFORM_ROLES
-              value: { { operatorPlatformRoles } }
+              value: {{ .Values.operatorPlatformRoles }}
             - name: STORAGE_CONTAINER
-              value: { { storageContainer } }
+              value: {{ .Values.storageContainer }}
             - name: STORAGE_ENDPOINT
-              value: { { storageEndpoint } }
+              value: {{ .Values.storageEndpoint }}
             - name: STORAGE_APPLICATION_ID
               valueFrom:
                 secretKeyRef:
@@ -90,6 +90,16 @@ spec:
                 secretKeyRef:
                   name: storage
                   key: STORAGE_PSW
+            - name: PARTY_MANAGEMENT_URL
+              value: {{ .Values.partyManagementUrl }}
+            - name: PARTY_PROXY_URL
+              value: {{ .Values.partyProxyUrl }}
+            - name: ATTRIBUTE_REGISTRY_URL
+              value: {{ .Values.attributeRegistryUrl }}
+            - name: AUTHORIZATION_PROCESS_URL
+              value: {{ .Values.authorizationProcessUrl }}
+            - name: USER_REGISTRY_MANAGEMENT_URL
+              value: {{ .Values.userRegistryManagementUrl }}
       volumes:
         - name: snapshots-volume
           emptyDir: {}

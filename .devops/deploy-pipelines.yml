@@ -19,6 +19,10 @@ parameters:
   - name: version
     displayName: docker image version form https://github.com/orgs/pagopa/packages/container/package/pdnd-interop-uservice-party-process
     type: string
+  - name: publishBakedManifests
+    displayName: Publish Baked Manifests
+    type: boolean
+    default: false
 
 variables:
   dockerfileRelativePath: '$(DOCKERFILE)' # Dockerfile
@@ -31,27 +35,59 @@ variables:
   imageRepository: '$(K8S_IMAGE_REPOSITORY_NAME)'
   deployNamespace: '$(DEPLOY_NAMESPACE)'
 
+  # App configuration
+  managerPlatformRoles: '$(MANAGER_PLATFORM_ROLES)'
+  delegatePlatformRoles: '$(DELEGATE_PLATFORM_ROLES)'
+  operatorPlatformRoles: '$(OPERATOR_PLATFORM_ROLES)'
+  storageContainer: '$(STORAGE_CONTAINER)'
+
   ${{ if eq(parameters['environment'], 'dev') }}:
     environment: 'DEV'
     dockerRegistryServiceConnection: '$(DEV_CONTAINER_REGISTRY_SERVICE_CONN)'
     kubernetesServiceConnection: '$(DEV_KUBERNETES_SERVICE_CONN)'
     containerRegistry: '$(DEV_CONTAINER_REGISTRY_NAME)'
-    deployment: deployment-dev
     selfHostedAgentPool: $(DEV_AGENT_POOL)
+
+    # App configuration
+    replicas: $(DEV_REPLICAS)
+    storageEndpoint: '$(DEV_STORAGE_ENDPOINT)'
+    partyManagementUrl: '$(DEV_PARTY_MANAGEMENT_URL)'
+    partyProxyUrl: '$(DEV_PARTY_PROXY_URL)'
+    attributeRegistryUrl: '$(DEV_ATTRIBUTE_REGISTRY_URL)'
+    authorizationProcessUrl: '$(DEV_AUTHORIZATION_PROCESS_URL)'
+    userRegistryManagementUrl: '$(DEV_USER_REGISTRY_MANAGEMENT_URL)'
+
   ${{ if eq(parameters['environment'], 'uat') }}:
     environment: 'UAT'
     dockerRegistryServiceConnection: '$(UAT_CONTAINER_REGISTRY_SERVICE_CONN)'
     kubernetesServiceConnection: '$(UAT_KUBERNETES_SERVICE_CONN)'
     containerRegistry: '$(UAT_CONTAINER_REGISTRY_NAME)'
-    deployment: deployment-uat
     selfHostedAgentPool: $(UAT_AGENT_POOL)
+
+    # App configuration
+    replicas: $(UAT_REPLICAS)
+    storageEndpoint: '$(UAT_STORAGE_ENDPOINT)'
+    partyManagementUrl: '$(UAT_PARTY_MANAGEMENT_URL)'
+    partyProxyUrl: '$(UAT_PARTY_PROXY_URL)'
+    attributeRegistryUrl: '$(UAT_ATTRIBUTE_REGISTRY_URL)'
+    authorizationProcessUrl: '$(UAT_AUTHORIZATION_PROCESS_URL)'
+    userRegistryManagementUrl: '$(UAT_USER_REGISTRY_MANAGEMENT_URL)'
+
   ${{ if eq(parameters['environment'], 'prod') }}:
     environment: 'PROD'
     dockerRegistryServiceConnection: '$(PROD_CONTAINER_REGISTRY_SERVICE_CONN)'
     kubernetesServiceConnection: '$(PROD_KUBERNETES_SERVICE_CONN)'
     containerRegistry: '$(PROD_CONTAINER_REGISTRY_NAME)'
-    deployment: deployment-prod
     selfHostedAgentPool: $(PROD_AGENT_POOL)
+
+    # App configuration
+    replicas: $(PROD_REPLICAS)
+    storageEndpoint: '$(PROD_STORAGE_ENDPOINT)'
+    partyManagementUrl: '$(PROD_PARTY_MANAGEMENT_URL)'
+    partyProxyUrl: '$(PROD_PARTY_PROXY_URL)'
+    attributeRegistryUrl: '$(PROD_ATTRIBUTE_REGISTRY_URL)'
+    authorizationProcessUrl: '$(PROD_AUTHORIZATION_PROCESS_URL)'
+    userRegistryManagementUrl: '$(PROD_USER_REGISTRY_MANAGEMENT_URL)'
 
 # docker build -t container_tag --build-arg MYAPP_IMAGE=localimage:latest .
 
@@ -96,6 +132,12 @@ stages:
                 $(Build.BuildId)
                 latest
                 ${{ parameters.version }}
+          - task: PublishPipelineArtifact@1
+            displayName: 'Publish Artifact manifests'
+            inputs:
+              targetPath: '$(Build.Repository.LocalPath)/manifest'
+              artifact: 'manifests'
+              publishLocation: 'pipeline'
 
   - stage: 'Deploy'
     displayName: 'Deploy_to_${{ variables.environment }}'
@@ -118,6 +160,35 @@ stages:
                     artifactName: 'manifests'
                     targetPath: '$(Pipeline.Workspace)/manifests'
                 - task: KubernetesManifest@0
+                  name: bake
+                  displayName: Bake K8s manifests from Helm chart
+                  inputs:
+                    namespace: '$(deployNamespace)'
+                    action: bake
+                    renderType: helm2
+                    helmChart: '$(Pipeline.Workspace)/manifests/helmCharts/'
+                    overrides: |
+                      replicas:$(replicas)
+                      containerRegistry:$(containerRegistry)
+                      imageRepository:$(imageRepository)
+                      managerPlatformRoles:$(managerPlatformRoles)
+                      delegatePlatformRoles:$(delegatePlatformRoles)
+                      operatorPlatformRoles:$(operatorPlatformRoles)
+                      storageContainer:$(storageContainer)
+                      storageEndpoint:$(storageEndpoint)
+                      partyManagementUrl:$(partyManagementUrl)
+                      partyProxyUrl:$(partyProxyUrl)
+                      attributeRegistryUrl:$(attributeRegistryUrl)
+                      authorizationProcessUrl:$(authorizationProcessUrl)
+                      userRegistryManagementUrl:$(userRegistryManagementUrl)
+                - task: PublishPipelineArtifact@1
+                  displayName: 'Publish Artifact baked manifests'
+                  condition: ${{ parameters.publishBakedManifests }}
+                  inputs:
+                    targetPath: $(bake.manifestsBundle)
+                    artifact: 'baked'
+                    publishLocation: 'pipeline'
+                - task: KubernetesManifest@0
                   displayName: Deploy to Kubernetes cluster
                   inputs:
                     action: deploy
@@ -125,6 +196,6 @@ stages:
                     kubernetesServiceConnection: ${{ variables.kubernetesServiceConnection }}
                     namespace: '$(deployNamespace)'
                     manifests: |
-                      $(Pipeline.Workspace)/manifests/$(deployment).yml
+                      $(bake.manifestsBundle)
                       $(Pipeline.Workspace)/manifests/service.yml
                     containers: '$(containerRegistry)/$(imageRepository):${{ parameters.version }}'
