@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: uservicepartyprocess
+  name: uservice-party-process
 spec:
   type: ClusterIP
   ports:
     - port: 8088
   selector:
-    app: uservicepartyprocess
+    app: uservice-party-process
