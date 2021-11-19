@@ -44,17 +44,16 @@ spec:
             - name: monitoring
               containerPort: 9095
               protocol: TCP
+          envFrom:
+            - secretRef:
+                name: application-insights
           env:
-            - name: VAULT_ADDR
-              valueFrom:
-                secretKeyRef:
-                  name: vault
-                  key: VAULT_ADDR
-            - name: VAULT_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: vault
-                  key: VAULT_TOKEN
+            - name: JAVA_OPTS
+              value: -javaagent:/applicationinsights-agent.jar
+            - name: APPLICATIONINSIGHTS_ROLE_NAME
+              value: uservice-party-process
+            - name: APPLICATIONINSIGHTS_INSTRUMENTATION_LOGGING_LEVEL
+              value: OFF
             - name: SMTP_USR
               valueFrom:
                 secretKeyRef:
@@ -70,12 +69,14 @@ spec:
                 secretKeyRef:
                   name: mail
                   key: DESTINATION_MAILS
-            - name: MANAGER_PLATFORM_ROLES
-              value: {{ .Values.managerPlatformRoles }}
-            - name: DELEGATE_PLATFORM_ROLES
-              value: {{ .Values.delegatePlatformRoles }}
-            - name: OPERATOR_PLATFORM_ROLES
-              value: {{ .Values.operatorPlatformRoles }}
+            - name: MANAGER_PRODUCT_ROLES
+              value: {{ .Values.managerProductRoles }}
+            - name: DELEGATE_PRODUCT_ROLES
+              value: {{ .Values.delegateProductRoles }}
+            - name: OPERATOR_PRODUCT_ROLES
+              value: {{ .Values.operatorProductRoles }}
+            - name: STORAGE_TYPE
+              value: {{ .Values.storageType }}
             - name: STORAGE_CONTAINER
               value: {{ .Values.storageContainer }}
             - name: STORAGE_ENDPOINT
@@ -96,8 +97,6 @@ spec:
               value: {{ .Values.partyProxyUrl }}
             - name: ATTRIBUTE_REGISTRY_URL
               value: {{ .Values.attributeRegistryUrl }}
-            - name: AUTHORIZATION_PROCESS_URL
-              value: {{ .Values.authorizationProcessUrl }}
             - name: USER_REGISTRY_MANAGEMENT_URL
               value: {{ .Values.userRegistryManagementUrl }}
       volumes:

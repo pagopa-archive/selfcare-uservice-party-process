@@ -36,9 +36,10 @@ variables:
   deployNamespace: '$(DEPLOY_NAMESPACE)'
 
   # App configuration
-  managerPlatformRoles: '$(MANAGER_PLATFORM_ROLES)'
-  delegatePlatformRoles: '$(DELEGATE_PLATFORM_ROLES)'
-  operatorPlatformRoles: '$(OPERATOR_PLATFORM_ROLES)'
+  storageType: 'BlobStorage'
+  managerProductRoles: '$(MANAGER_PRODUCT_ROLES)'
+  delegateProductRoles: '$(DELEGATE_PRODUCT_ROLES)'
+  operatorProductRoles: '$(OPERATOR_PRODUCT_ROLES)'
 
   ${{ if eq(parameters['environment'], 'dev') }}:
     environment: 'DEV'
@@ -54,7 +55,6 @@ variables:
     partyManagementUrl: '$(DEV_PARTY_MANAGEMENT_URL)'
     partyProxyUrl: '$(DEV_PARTY_PROXY_URL)'
     attributeRegistryUrl: '$(DEV_ATTRIBUTE_REGISTRY_URL)'
-    authorizationProcessUrl: '$(DEV_AUTHORIZATION_PROCESS_URL)'
     userRegistryManagementUrl: '$(DEV_USER_REGISTRY_MANAGEMENT_URL)'
 
   ${{ if eq(parameters['environment'], 'uat') }}:
@@ -71,7 +71,6 @@ variables:
     partyManagementUrl: '$(UAT_PARTY_MANAGEMENT_URL)'
     partyProxyUrl: '$(UAT_PARTY_PROXY_URL)'
     attributeRegistryUrl: '$(UAT_ATTRIBUTE_REGISTRY_URL)'
-    authorizationProcessUrl: '$(UAT_AUTHORIZATION_PROCESS_URL)'
     userRegistryManagementUrl: '$(UAT_USER_REGISTRY_MANAGEMENT_URL)'
 
   ${{ if eq(parameters['environment'], 'prod') }}:
@@ -88,7 +87,6 @@ variables:
     partyManagementUrl: '$(PROD_PARTY_MANAGEMENT_URL)'
     partyProxyUrl: '$(PROD_PARTY_PROXY_URL)'
     attributeRegistryUrl: '$(PROD_ATTRIBUTE_REGISTRY_URL)'
-    authorizationProcessUrl: '$(PROD_AUTHORIZATION_PROCESS_URL)'
     userRegistryManagementUrl: '$(PROD_USER_REGISTRY_MANAGEMENT_URL)'
 
 # docker build -t container_tag --build-arg MYAPP_IMAGE=localimage:latest .
@@ -111,7 +109,7 @@ stages:
               command: 'Build'
               Dockerfile: '$(Build.Repository.LocalPath)/$(dockerfileRelativePath)'
               buildContext: '$(Build.Repository.LocalPath)'
-              arguments: --build-arg 'APP_IMAGE=$(DOCKER_BASE_IMAGE_NAME):${{ parameters.version }}'
+              arguments: --build-arg APP_IMAGE=$(DOCKER_BASE_IMAGE_NAME):${{ parameters.version }}
               tags: |
                 $(Build.BuildId)
                 latest
@@ -173,15 +171,15 @@ stages:
                       replicas:$(replicas)
                       containerRegistry:$(containerRegistry)
                       imageRepository:$(imageRepository)
-                      managerPlatformRoles:$(managerPlatformRoles)
-                      delegatePlatformRoles:$(delegatePlatformRoles)
-                      operatorPlatformRoles:$(operatorPlatformRoles)
+                      storageType:$(storageType)
+                      managerProductRoles:$(managerProductRoles)
+                      delegateProductRoles:$(delegateProductRoles)
+                      operatorProductRoles:$(operatorProductRoles)
                       storageContainer:$(storageContainer)
                       storageEndpoint:$(storageEndpoint)
                       partyManagementUrl:$(partyManagementUrl)
                       partyProxyUrl:$(partyProxyUrl)
                       attributeRegistryUrl:$(attributeRegistryUrl)
-                      authorizationProcessUrl:$(authorizationProcessUrl)
                       userRegistryManagementUrl:$(userRegistryManagementUrl)
                 - task: PublishPipelineArtifact@1
                   displayName: 'Publish Artifact baked manifests'
