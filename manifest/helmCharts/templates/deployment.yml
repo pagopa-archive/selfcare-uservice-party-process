@@ -47,58 +47,12 @@ spec:
           envFrom:
             - secretRef:
                 name: application-insights
-          env:
-            - name: JAVA_OPTS
-              value: -javaagent:/applicationinsights-agent.jar
-            - name: APPLICATIONINSIGHTS_ROLE_NAME
-              value: uservice-party-process
-            - name: APPLICATIONINSIGHTS_INSTRUMENTATION_LOGGING_LEVEL
-              value: OFF
-            - name: SMTP_USR
-              valueFrom:
-                secretKeyRef:
-                  name: smtp
-                  key: SMTP_USR
-            - name: SMTP_PSW
-              valueFrom:
-                secretKeyRef:
-                  name: smtp
-                  key: SMTP_PSW
-            - name: DESTINATION_MAILS
-              valueFrom:
-                secretKeyRef:
-                  name: mail
-                  key: DESTINATION_MAILS
-            - name: MANAGER_PRODUCT_ROLES
-              value: {{ .Values.managerProductRoles }}
-            - name: DELEGATE_PRODUCT_ROLES
-              value: {{ .Values.delegateProductRoles }}
-            - name: OPERATOR_PRODUCT_ROLES
-              value: {{ .Values.operatorProductRoles }}
-            - name: STORAGE_TYPE
-              value: {{ .Values.storageType }}
-            - name: STORAGE_CONTAINER
-              value: {{ .Values.storageContainer }}
-            - name: STORAGE_ENDPOINT
-              value: {{ .Values.storageEndpoint }}
-            - name: STORAGE_APPLICATION_ID
-              valueFrom:
-                secretKeyRef:
-                  name: storage
-                  key: STORAGE_USR
-            - name: STORAGE_APPLICATION_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: storage
-                  key: STORAGE_PSW
-            - name: PARTY_MANAGEMENT_URL
-              value: {{ .Values.partyManagementUrl }}
-            - name: PARTY_PROXY_URL
-              value: {{ .Values.partyProxyUrl }}
-            - name: ATTRIBUTE_REGISTRY_URL
-              value: {{ .Values.attributeRegistryUrl }}
-            - name: USER_REGISTRY_MANAGEMENT_URL
-              value: {{ .Values.userRegistryManagementUrl }}
+            - secretRef:
+                name: contracts-storage
+            - secretRef:
+                name: mail
+            - configMapRef:
+                name: uservice-party-process
       volumes:
         - name: snapshots-volume
           emptyDir: {}
