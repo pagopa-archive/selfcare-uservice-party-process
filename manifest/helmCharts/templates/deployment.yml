@@ -2,22 +2,22 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: uservice-party-process
-  name: uservice-party-process
+    app: pdnd-interop-uservice-party-process
+  name: pdnd-interop-uservice-party-process
 spec:
   replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
-      app: uservice-party-process
+      app: pdnd-interop-uservice-party-process
   template:
     metadata:
       labels:
-        app: uservice-party-process
+        app: pdnd-interop-uservice-party-process
     spec:
       imagePullSecrets:
         - name: regcred
       containers:
-        - name: uservice-party-process
+        - name: pdnd-interop-uservice-party-process
           image: {{ .Values.containerRegistry }}/{{ .Values.imageRepository }}
           imagePullPolicy: Always
           readinessProbe:
