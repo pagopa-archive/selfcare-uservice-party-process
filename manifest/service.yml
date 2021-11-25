@@ -4,7 +4,6 @@ metadata:
   labels:
     prometheus: "true"
   name: pdnd-interop-uservice-party-process
-  namespace: pdnd-interop-uservice-party-process
 spec:
   type: ClusterIP
   ports:
