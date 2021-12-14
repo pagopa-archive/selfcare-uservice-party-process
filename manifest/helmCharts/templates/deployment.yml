@@ -55,6 +55,3 @@ spec:
                 name: uservice-party-process
             - configMapRef:
                 name: uservice-party-process
-      volumes:
-        - name: snapshots-volume
-          emptyDir: {}
