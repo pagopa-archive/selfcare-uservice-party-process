@@ -51,8 +51,7 @@ spec:
                 name: contracts-storage
             - secretRef:
                 name: mail
+            - secretRef:
+                name: uservice-party-process
             - configMapRef:
                 name: uservice-party-process
-      volumes:
-        - name: snapshots-volume
-          emptyDir: {}
