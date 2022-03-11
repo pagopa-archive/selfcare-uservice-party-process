@@ -1,0 +1,100 @@
+# Default values for selfcare-uservice-party-process.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+namespace: selc
+
+replicaCount: 1
+
+image:
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
+commandConfig:
+  command: [ "bin/pdnd-interop-uservice-party-process" ]
+  args: [ "-Dconfig.override_with_env_vars=true" ]
+
+imagePullSecrets:
+  - name: regcred
+
+nameOverride: ""
+fullnameOverride: "pdnd-interop-uservice-party-process"
+
+containers:
+  portNumber: 8088
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext:
+  runAsUser: 1001
+  allowPrivilegeEscalation: false
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+
+service:
+  type: ClusterIP
+  appPort: 8088
+  appTargetPort: http
+  monitoringPort: 9095
+  monitoringTargetPort: monitoring
+
+ingress:
+  enabled: true
+  className: ""
+  annotations:
+   kubernetes.io/ingress.class: "nginx"
+   nginx.ingress.kubernetes.io/rewrite-target: "/pdnd-interop-uservice-$1/0.1/$2"
+   nginx.ingress.kubernetes.io/ssl-redirect: "false"
+   nginx.ingress.kubernetes.io/use-regex: "true"
+   nginx.ingress.kubernetes.io/enable-cors: "true"
+   nginx.ingress.kubernetes.io/cors-allow-headers: "local.cors.headers"
+   nginx.ingress.kubernetes.io/cors-allow-origin: "local.cors.origins"
+  hosts:
+    - host: ""
+      paths:
+        - path: "/(party-process)/v1/(.*)"
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+config:
+  APPLICATIONINSIGHTS_ROLE_NAME: "uservice-party-process"
+  MAIL_TEMPLATE_PATH: "contracts/template/mail/1.0.0.json"
+  # URL of the european List Of Trusted List see https://esignature.ec.europa.eu/efda/tl-browser/#/screen/tl/EU
+  EU_LIST_OF_TRUSTED_LISTS_URL: "https://ec.europa.eu/tools/lotl/eu-lotl.xml"
+  # URL of the Official Journal URL where the EU trusted certificates are listed see https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.C_.2019.276.01.0001.01.ENG
+  EU_OFFICIAL_JOURNAL_URL: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.C_.2019.276.01.0001.01.ENG"
