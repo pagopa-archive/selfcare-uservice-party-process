@@ -1,0 +1,23 @@
+image:
+  repository: selcpacr.azurecr.io/uservicepartyprocess
+  pullPolicy: Always # TODO change me in IfNotPresent when each build will have a different tag
+  tag: v0.1.3
+
+replicaCount: 1
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+configEnvSpecific:
+  JAVA_OPTS: "-javaagent:/applicationinsights-agent.jar"
+  APPLICATIONINSIGHTS_INSTRUMENTATION_LOGGING_LEVEL: "OFF"
+  PARTY_MANAGEMENT_URL: "http://pdnd-interop-uservice-party-management:8088/pdnd-interop-uservice-party-management/0.1"
+  PARTY_PROXY_URL: "http://pdnd-interop-uservice-party-registry-proxy:8088/pdnd-interop-uservice-party-registry-proxy/0.1"
+  USER_REGISTRY_MANAGEMENT_URL: "https://api.userregistry.pagopa.it/user-registry-management/v1"
+  MAIL_ONBOARDING_CONFIRMATION_LINK: "https://selfcare.pagopa.it/onboarding/confirm?jwt="
+  MAIL_ONBOARDING_REJECTION_LINK: "https://selfcare.pagopa.it/onboarding/cancel?jwt="
+  SIGNATURE_VALIDATION_ENABLED: "true"
