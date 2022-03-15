@@ -108,12 +108,12 @@ stages:
               buildContext: '$(Build.Repository.LocalPath)'
               arguments: --build-arg APP_IMAGE=$(DOCKER_BASE_IMAGE_NAME):$(dockerImageVersion)
               tags: |
-                $(Build.BuildId)
+                $(Build.BuildNumber)
                 latest
                 $(dockerImageVersion)
           - script: |
               docker tag '$(COMMON_CONTAINER_REGISTRY_NAME)/$(imageRepository):latest' '$(containerRegistry)/$(imageRepository):latest'
-              docker tag '$(COMMON_CONTAINER_REGISTRY_NAME)/$(imageRepository):$(Build.BuildId)' '$(containerRegistry)/$(imageRepository):$(Build.BuildId)'
+              docker tag '$(COMMON_CONTAINER_REGISTRY_NAME)/$(imageRepository):$(Build.BuildNumber)' '$(containerRegistry)/$(imageRepository):$(Build.BuildNumber)'
               docker tag '$(COMMON_CONTAINER_REGISTRY_NAME)/$(imageRepository):$(dockerImageVersion)' '$(containerRegistry)/$(imageRepository):$(dockerImageVersion)'
             displayName: 'Tag_image'
           - task: Docker@2
@@ -126,7 +126,7 @@ stages:
               Dockerfile: '$(Build.Repository.LocalPath)/$(dockerfileRelativePath)'
               buildContext: '$(Build.Repository.LocalPath)'
               tags: |
-                $(Build.BuildId)
+                $(Build.BuildNumber)
                 latest
                 $(dockerImageVersion)
 
@@ -167,7 +167,7 @@ stages:
                     waitForExecution: true
                     arguments: "--timeout 2m0s"
                 - task: KubernetesManifest@0
-                  displayName: Patch
+                  displayName: Patch deployment to force the reload
                   inputs:
                     kubernetesServiceConnection: ${{ variables.kubernetesServiceConnection }}
                     namespace: '$(deployNamespace)'
