@@ -90,7 +90,7 @@ tolerations: []
 affinity: {}
 
 config:
-  APPLICATIONINSIGHTS_ROLE_NAME: "uservice-party-process"
+  APPLICATIONINSIGHTS_ROLE_NAME: "interop-be-party-process"
   APPLICATIONINSIGHTS_INSTRUMENTATION_JDBC_ENABLED: 'false' # this instrumentation will go in conflict with the application (after upgrade to 0.1.11)
   MAIL_TEMPLATE_PATH: "contracts/template/mail/1.0.0.json"
   # URL of the european List Of Trusted List see https://esignature.ec.europa.eu/efda/tl-browser/#/screen/tl/EU
