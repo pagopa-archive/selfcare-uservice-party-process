@@ -10,14 +10,14 @@ image:
   tag: "latest"
 
 commandConfig:
-  command: [ "bin/pdnd-interop-uservice-party-process" ]
+  command: [ "bin/interop-be-party-process" ]
   args: [ "-Dconfig.override_with_env_vars=true" ]
 
 imagePullSecrets:
   - name: regcred
 
 nameOverride: ""
-fullnameOverride: "pdnd-interop-uservice-party-process"
+fullnameOverride: "interop-be-party-process"
 
 containers:
   portNumber: 8088
@@ -48,7 +48,7 @@ ingress:
   className: ""
   annotations:
    kubernetes.io/ingress.class: "nginx"
-   nginx.ingress.kubernetes.io/rewrite-target: "/pdnd-interop-uservice-$1/0.1/$2"
+   nginx.ingress.kubernetes.io/rewrite-target: "/$1/0.1/$2"
    nginx.ingress.kubernetes.io/ssl-redirect: "false"
    nginx.ingress.kubernetes.io/use-regex: "true"
    nginx.ingress.kubernetes.io/enable-cors: "true"
@@ -90,7 +90,8 @@ tolerations: []
 affinity: {}
 
 config:
-  APPLICATIONINSIGHTS_ROLE_NAME: "uservice-party-process"
+  APPLICATIONINSIGHTS_ROLE_NAME: "interop-be-party-process"
+  APPLICATIONINSIGHTS_INSTRUMENTATION_JDBC_ENABLED: 'false' # this instrumentation will go in conflict with the application (after upgrade to 0.1.11)
   MAIL_TEMPLATE_PATH: "contracts/template/mail/1.0.0.json"
   # URL of the european List Of Trusted List see https://esignature.ec.europa.eu/efda/tl-browser/#/screen/tl/EU
   EU_LIST_OF_TRUSTED_LISTS_URL: "https://ec.europa.eu/tools/lotl/eu-lotl.xml"
