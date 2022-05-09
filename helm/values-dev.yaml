@@ -1,6 +1,6 @@
 image:
   repository: selcdacr.azurecr.io/uservicepartyprocess
-  tag: 0.1.13
+  tag: 0.1.14
 
 replicaCount: 1
 
