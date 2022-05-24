@@ -66,7 +66,7 @@ spec:
                 configMapKeyRef:
                   name: jwt
                   key: JWT_TOKEN_AUDIENCE
-            - name: WELL_KNOW_URLS
+            - name: WELL_KNOWN_URLS
               valueFrom:
                 configMapKeyRef:
                   name: jwt
