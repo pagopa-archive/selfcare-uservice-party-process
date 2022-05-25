@@ -66,6 +66,11 @@ spec:
                 configMapKeyRef:
                   name: jwt
                   key: JWT_TOKEN_AUDIENCE
+            - name: WELL_KNOWN_URLS
+              valueFrom:
+                configMapKeyRef:
+                  name: jwt
+                  key: WELL_KNOWN_URL
           ports:
             - name: management
               containerPort: 8558

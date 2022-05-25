@@ -1,6 +1,6 @@
 image:
   repository: selcdacr.azurecr.io/uservicepartyprocess
-  tag: 0.1.14
+  tag: 0.1.17
 
 replicaCount: 1
 
@@ -17,8 +17,8 @@ configEnvSpecific:
   REQUIRED_CONTACT_POINT_NR: "1"
   PARTY_MANAGEMENT_URL: "http://interop-be-party-management:8088/party-management/0.1"
   PARTY_PROXY_URL: "http://interop-be-party-registry-proxy:8088/party-registry-proxy/0.1"
-  USER_REGISTRY_MANAGEMENT_URL: "https://api.dev.userregistry.pagopa.it/user-registry-management/v1"
+  USER_REGISTRY_MANAGEMENT_URL: "https://api.uat.pdv.pagopa.it/user-registry/v1"
   MAIL_ONBOARDING_CONFIRMATION_LINK: "https://dev.selfcare.pagopa.it/onboarding/confirm?jwt="
   MAIL_ONBOARDING_REJECTION_LINK: "https://dev.selfcare.pagopa.it/onboarding/cancel?jwt="
-  SIGNATURE_VALIDATION_ENABLED: "true"
+  SIGNATURE_VALIDATION_ENABLED: "false"
 
