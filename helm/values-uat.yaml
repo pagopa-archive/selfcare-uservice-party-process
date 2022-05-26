@@ -2,6 +2,10 @@ image:
   repository: selcuacr.azurecr.io/uservicepartyprocess
   tag: 0.1.10
 
+ingress:
+  annotations:
+    nginx.ingress.kubernetes.io/cors-allow-origin: "https://uat.selfcare.pagopa.it,http://localhost:3000"
+
 replicaCount: 1
 
 autoscaling:
