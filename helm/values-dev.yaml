@@ -1,6 +1,6 @@
 image:
   repository: selcdacr.azurecr.io/uservicepartyprocess
-  tag: 0.1.17
+  tag: 0.1.18
 
 ingress:
   annotations:
