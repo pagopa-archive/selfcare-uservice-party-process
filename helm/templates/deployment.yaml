@@ -66,6 +66,16 @@ spec:
                 configMapKeyRef:
                   name: jwt
                   key: WELL_KNOWN_URL
+            - name: PARTY_MANAGEMENT_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: inner-service-url
+                  key: USERVICE_PARTY_MANAGEMENT_URL
+            - name: PARTY_PROXY_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: inner-service-url
+                  key: USERVICE_PARTY_REGISTRY_PROXY_URL
           ports:
             - name: management
               containerPort: 8558

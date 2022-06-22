@@ -20,8 +20,6 @@ configEnvSpecific:
   JAVA_OPTS: "-javaagent:/applicationinsights-agent.jar"
   APPLICATIONINSIGHTS_INSTRUMENTATION_LOGGING_LEVEL: "OFF"
   REQUIRED_CONTACT_POINT_NR: "1"
-  PARTY_MANAGEMENT_URL: "http://interop-be-party-management:8088/party-management/0.1"
-  PARTY_PROXY_URL: "http://interop-be-party-registry-proxy:8088/party-registry-proxy/0.1"
   USER_REGISTRY_MANAGEMENT_URL: "https://api.pdv.pagopa.it/user-registry/v1"
   MAIL_ONBOARDING_CONFIRMATION_LINK: "https://selfcare.pagopa.it/onboarding/confirm?jwt="
   MAIL_ONBOARDING_REJECTION_LINK: "https://selfcare.pagopa.it/onboarding/cancel?jwt="
