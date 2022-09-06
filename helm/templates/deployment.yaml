@@ -49,6 +49,8 @@ spec:
                 name: mail
             - secretRef:
                 name: uservice-party-process
+            - secretRef:
+                name: product-external-api
             - configMapRef:
                 name: {{ include "this.fullname" . }}
           env:
