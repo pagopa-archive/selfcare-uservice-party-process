@@ -25,4 +25,3 @@ configEnvSpecific:
   PRODUCT_MANAGEMENT_URL: https://api.dev.selfcare.pagopa.it/external/v1
   SIGNATURE_VALIDATION_ENABLED: "false"
   CONFIRM_TOKEN_TIMEOUT: "90 seconds"
-
