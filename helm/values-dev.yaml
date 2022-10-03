@@ -1,6 +1,6 @@
 image:
   repository: selcdacr.azurecr.io/uservicepartyprocess
-  tag: 0.1.29
+  tag: 0.1.34
 
 ingress:
   annotations:
@@ -25,4 +25,4 @@ configEnvSpecific:
   PRODUCT_MANAGEMENT_URL: https://api.dev.selfcare.pagopa.it/external/v1
   SIGNATURE_VALIDATION_ENABLED: "false"
   CONFIRM_TOKEN_TIMEOUT: "90 seconds"
-
+  ONBOARDING_SEND_EMAIL_TO_INSTITUTION: "false"
