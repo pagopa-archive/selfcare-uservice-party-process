@@ -101,4 +101,4 @@ config:
   SELFCARE_URL: "https://selfcare.pagopa.it"
   PAGOPA_LOGO_URL: "resources/logo.png"
   ADDRESS_EMAIL_NOTIFICATION_ADMIN: "pectest@pec.pagopa.it"
-  SELFCARE_ADMIN_NOTIFICATION_URL: "https://dev.selfcare.pagopa.it/dashboard/admin/onboarding?token="
+  SELFCARE_ADMIN_NOTIFICATION_URL: "https://dev.selfcare.pagopa.it/dashboard/admin/onboarding/"
