@@ -1,6 +1,6 @@
 image:
   repository: selcuacr.azurecr.io/uservicepartyprocess
-  tag: 0.1.40
+  tag: 0.1.41
 
 ingress:
   annotations:
@@ -26,3 +26,5 @@ configEnvSpecific:
   SIGNATURE_VALIDATION_ENABLED: "true"
   CONFIRM_TOKEN_TIMEOUT: "90 seconds"
   ONBOARDING_SEND_EMAIL_TO_INSTITUTION: "false"
+  ADDRESS_EMAIL_NOTIFICATION_ADMIN: "pectest@pec.pagopa.it"
+  SELFCARE_ADMIN_NOTIFICATION_URL: "https://uat.selfcare.pagopa.it/dashboard/admin/onboarding/"
