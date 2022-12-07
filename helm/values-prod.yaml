@@ -1,7 +1,7 @@
 image:
   repository: selcpacr.azurecr.io/uservicepartyprocess
   pullPolicy: Always # TODO change me in IfNotPresent when each build will have a different tag
-  tag: 0.1.35
+  tag: 0.1.41
 
 ingress:
   annotations:
@@ -27,3 +27,4 @@ configEnvSpecific:
   SIGNATURE_VALIDATION_ENABLED: "true"
   CONFIRM_TOKEN_TIMEOUT: "90 seconds"
   ONBOARDING_SEND_EMAIL_TO_INSTITUTION: "true"
+  SELFCARE_ADMIN_NOTIFICATION_URL: "https://selfcare.pagopa.it/dashboard/admin/onboarding/"
