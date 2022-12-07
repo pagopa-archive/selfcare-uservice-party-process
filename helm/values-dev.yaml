@@ -26,5 +26,4 @@ configEnvSpecific:
   SIGNATURE_VALIDATION_ENABLED: "false"
   CONFIRM_TOKEN_TIMEOUT: "90 seconds"
   ONBOARDING_SEND_EMAIL_TO_INSTITUTION: "false"
-  ADDRESS_EMAIL_NOTIFICATION_ADMIN: "pectest@pec.pagopa.it"
   SELFCARE_ADMIN_NOTIFICATION_URL: "https://dev.selfcare.pagopa.it/dashboard/admin/onboarding/"
