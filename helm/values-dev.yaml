@@ -28,4 +28,4 @@ configEnvSpecific:
   ONBOARDING_SEND_EMAIL_TO_INSTITUTION: "false"
   SELFCARE_ADMIN_NOTIFICATION_URL: "https://dev.selfcare.pagopa.it/dashboard/admin/onboarding/"
   GEO_TAXONOMY_URL: "https://api.dev.selfcare.pagopa.it/external"
-  MAIL_ONBOARDING_URL: "https://dev.selfcare.pagopa.it/dashboard/"
+  MAIL_ONBOARDING_URL: "https://dev.selfcare.pagopa.it/onboarding/"
