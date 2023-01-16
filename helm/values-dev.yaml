@@ -1,6 +1,6 @@
 image:
   repository: selcdacr.azurecr.io/uservicepartyprocess
-  tag: 0.1.44
+  tag: 0.1.48
 
 ingress:
   annotations:
@@ -28,3 +28,4 @@ configEnvSpecific:
   ONBOARDING_SEND_EMAIL_TO_INSTITUTION: "false"
   SELFCARE_ADMIN_NOTIFICATION_URL: "https://dev.selfcare.pagopa.it/dashboard/admin/onboarding/"
   GEO_TAXONOMY_URL: "https://api.dev.selfcare.pagopa.it/external"
+  MAIL_ONBOARDING_URL: "https://dev.selfcare.pagopa.it/onboarding/"
