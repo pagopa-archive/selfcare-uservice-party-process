@@ -30,3 +30,17 @@ configEnvSpecific:
   SELFCARE_ADMIN_NOTIFICATION_URL: "https://selfcare.pagopa.it/dashboard/admin/onboarding/"
   GEO_TAXONOMY_URL: "https://api.dev.selfcare.pagopa.it/external"
   MAIL_ONBOARDING_URL: "https://selfcare.pagopa.it/onboarding/"
+
+  # PagoPa signature feature
+  # TODO set PROD values and enable it
+  PAGOPA_SIGNATURE_ENABLED: "false"
+  # Used only if the certifate doesn't contain it
+  # TODO set with CEO name and surname
+  PAGOPA_SIGNATURE_SIGNER: "PagoPA S.P.A."
+  ARUBA_SIGN_SERVICE_BASE_URL: "https://arss.demo.firma-automatica.it:443/ArubaSignService/ArubaSignService"
+  ARUBA_SIGN_SERVICE_IDENTITY_TYPE_OTP_AUTH: "demoprod"
+  ARUBA_SIGN_SERVICE_IDENTITY_OTP_PWD: "dsign"
+  ARUBA_SIGN_SERVICE_IDENTITY_USER: "titolare_aut"
+  ARUBA_SIGN_SERVICE_IDENTITY_DELEGATED_USER: "delegato"
+  ARUBA_SIGN_SERVICE_IDENTITY_DELEGATED_PASSWORD: "password11"
+  ARUBA_SIGN_SERVICE_IDENTITY_DELEGATED_DOMAIN: "demoprod"
