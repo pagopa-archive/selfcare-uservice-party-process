@@ -32,6 +32,7 @@ configEnvSpecific:
 
   # PagoPa signature feature
   PAGOPA_SIGNATURE_ENABLED: "true"
+  # Used only if the certifate doesn't contain it
   PAGOPA_SIGNATURE_SIGNER: "PagoPA S.P.A."
   ARUBA_SIGN_SERVICE_BASE_URL: "https://arss.demo.firma-automatica.it:443/ArubaSignService/ArubaSignService"
   ARUBA_SIGN_SERVICE_IDENTITY_TYPE_OTP_AUTH: "demoprod"

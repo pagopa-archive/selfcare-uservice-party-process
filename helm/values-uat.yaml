@@ -33,6 +33,7 @@ configEnvSpecific:
   # PagoPa signature feature
   # TODO set PROD values and enable it
   PAGOPA_SIGNATURE_ENABLED: "false"
+  # Used only if the certifate doesn't contain it
   # TODO set with CEO name and surname
   PAGOPA_SIGNATURE_SIGNER: "PagoPA S.P.A."
   ARUBA_SIGN_SERVICE_BASE_URL: "https://arss.demo.firma-automatica.it:443/ArubaSignService/ArubaSignService"
