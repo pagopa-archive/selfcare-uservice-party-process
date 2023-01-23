@@ -101,3 +101,7 @@ config:
   EU_OFFICIAL_JOURNAL_URL: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.C_.2019.276.01.0001.01.ENG"
   SELFCARE_URL: "https://selfcare.pagopa.it"
   PAGOPA_LOGO_URL: "resources/logo.png"
+
+  # PagoPa signature feature
+  PAGOPA_SIGNATURE_LOCATION: "Roma"
+  PAGOPA_SIGNATURE_ONBOARDING_REASON_TEMPLATE: "Firma contratto adesione prodotto"
