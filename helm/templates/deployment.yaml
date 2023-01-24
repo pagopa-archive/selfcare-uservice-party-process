@@ -51,6 +51,8 @@ spec:
                 name: uservice-party-process
             - secretRef:
                 name: product-external-api
+            - secretRef:
+                name: aruba-sign-service-secrets
             - configMapRef:
                 name: {{ include "this.fullname" . }}
           env:
